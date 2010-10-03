@@ -7,7 +7,7 @@ use MT::I18N;
 
 use vars qw( $MYNAME $VERSION );
 $MYNAME = 'SearchStringHighlight';
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 use base qw( MT::Plugin );
 my $plugin = __PACKAGE__->new({
@@ -70,9 +70,12 @@ sub tag_searchstringhighlight {
     my @matches = ('');
     while (my ($_find) = $text =~ /(?:$utf8){0,$ql1}($needle)(?:(?:$utf8){0,$ql2}(?:$needle))*(?:$utf8){0,$ql1}/s) {
         push @matches, $&;
-        $text =~ s/[\s\S]*?$&//s;
+        $_find = quotemeta $&;
+        $text =~ s/[\s\S]*?$_find//s;
     }
-    push @matches, ''; $text = join '...', @matches;
+    $text = 1 < @matches
+        ? join '...', @matches, ''
+        : $entry->get_excerpt;
 
     # first n characters
     ($text) = $text =~ /((?:$utf8){0,$words})/;
