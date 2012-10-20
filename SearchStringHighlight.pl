@@ -8,7 +8,7 @@ use MT::Util;
 use vars qw( $VENDOR $MYNAME $VERSION );
 ($VENDOR, $MYNAME) = (split /::/, __PACKAGE__)[-2, -1];
 (my $revision = '$Rev$') =~ s/\D//g;
-$VERSION = "0.20_$revision";
+$VERSION = '0.20'. ($revision ? ".$revision" : '');
 
 use base qw( MT::Plugin );
 my $plugin = __PACKAGE__->new ({
